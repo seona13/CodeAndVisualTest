@@ -6,8 +6,6 @@ using TMPro;
 
 public class UserInputUI : MonoBehaviour
 {
-    private GameSceneManager gameSceneManager;
-
     [SerializeField]
     private TMP_InputField nicknameField;
     [SerializeField]
@@ -15,43 +13,65 @@ public class UserInputUI : MonoBehaviour
     [SerializeField]
     private TMP_Dropdown ageField;
 
+    [SerializeField]
+    private GameObject errorPanel;
+    [SerializeField]
+    private TMP_Text nicknameError;
+    [SerializeField]
+    private TMP_Text suburbError;
+    [SerializeField]
+    private TMP_Text ageError;
 
-    private void Start()
+
+    private void OnEnable()
     {
-        gameSceneManager = GameObject.Find("SceneManager").GetComponent<GameSceneManager>();
-        if (gameSceneManager == null)
-        {
-            Debug.LogError("GameSceneManager not found");
-        }
+        CloseErrorPanel();
+    }
+
+
+    public void CloseErrorPanel()
+    {
+        nicknameError.gameObject.SetActive(false);
+        suburbError.gameObject.SetActive(false);
+        ageError.gameObject.SetActive(false);
+        errorPanel.gameObject.SetActive(false);
+    }
+
+
+    private void OpenErrorPanel()
+    {
+        errorPanel.gameObject.SetActive(true);
     }
 
 
     private bool ValidateForm()
     {
         bool nicknameValid = false;
-        bool suburbValid = false;
         bool ageValid = false;
 
         if (string.IsNullOrEmpty(nicknameField.text) == false)
         {
             nicknameValid = true;
         }
-        if (suburbField.value != 0)
+        else
         {
-            suburbValid = true;
+            nicknameError.gameObject.SetActive(true);
         }
         if (ageField.value != 0)
         {
             ageValid = true;
         }
+        else
+        {
+            ageError.gameObject.SetActive(true);
+        }
 
-        if (nicknameValid && suburbValid && ageValid)
+        if (nicknameValid && ageValid)
         {
             return true;
         }
-        /*
-        */
-        Debug.LogError("You must fill out all fields");
+
+        OpenErrorPanel();
         return false;
     }
 
@@ -60,7 +80,7 @@ public class UserInputUI : MonoBehaviour
     {
         if (ValidateForm())
         {
-            gameSceneManager.ChangeScene(2);
+            GameSceneManager.Instance.ChangeScene(2);
         }
     }
 }
