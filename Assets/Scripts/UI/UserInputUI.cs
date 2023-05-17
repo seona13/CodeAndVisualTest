@@ -36,19 +36,21 @@ public class UserInputUI : MonoBehaviour
         {
             nicknameValid = true;
         }
-        if (suburbField.value == 0)
+        if (suburbField.value != 0)
         {
-            nicknameValid = true;
+            suburbValid = true;
         }
-        if (ageField.value == 0)
+        if (ageField.value != 0)
         {
-            nicknameValid = true;
+            ageValid = true;
         }
 
         if (nicknameValid && suburbValid && ageValid)
         {
             return true;
         }
+        /*
+        */
         Debug.LogError("You must fill out all fields");
         return false;
     }
@@ -56,9 +58,9 @@ public class UserInputUI : MonoBehaviour
 
     public void SubmitForm()
     {
-        //if (ValidateForm())
-        //{
+        if (ValidateForm())
+        {
             gameSceneManager.ChangeScene(2);
-        //}
+        }
     }
 }
